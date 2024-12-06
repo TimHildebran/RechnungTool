@@ -26,7 +26,7 @@ def generate_invoice_number(directory):
 
 def save_invoice_as_pdf(invoice_text, filepath):
     """
-    Speichert den Rechnungstext als PDF-Datei mit angepasstem Zeilenabstand.
+    Speichert den Rechnungstext als PDF-Datei.
     """
     pdf = FPDF()
     pdf.add_page()
@@ -38,22 +38,18 @@ def save_invoice_as_pdf(invoice_text, filepath):
 
     pdf.set_auto_page_break(auto=True, margin=10)  # Automatischer Seitenumbruch mit unterem Rand
 
-    # Extrahiere die Rechnungsnummer aus dem Text
-    invoice_number = invoice_text.split("\n")[0].replace("Rechnungsnummer: ", "").strip()
-
-    # Rechnungsnummer mittig oben anzeigen
-    #pdf.set_font("Arial", size=14, style='B')  # Schriftart fett und größer für die Nummer
-    # pdf.cell(0, 10, txt=f"Rechnungsnummer: {invoice_number}", ln=True, align='C')
-    #pdf.ln(5)  # Abstand nach unten (reduziert auf 5)
-
-    # Schriftart zurücksetzen
+    # Schriftart und Schriftgröße festlegen
     pdf.set_font("Arial", size=12)
 
-    # Rechnungstext Zeile für Zeile hinzufügen (angepasster Zeilenabstand)
-    for line in invoice_text.split("\n")[1:]:
-        pdf.multi_cell(0, 7, txt=line.strip(), align='L')  # Zellhöhe auf 7 reduziert
+    # Rechnungstext Zeile für Zeile hinzufügen
+    for line in invoice_text.strip().split("\n"):
+        pdf.multi_cell(0, 10, txt=line.strip(), align='L')
 
     # PDF speichern
-    pdf.output(filepath)
+    try:
+        pdf.output(filepath)
+    except Exception as e:
+        raise RuntimeError(f"Fehler beim Speichern der PDF-Datei: {e}")
+
     return filepath
 
