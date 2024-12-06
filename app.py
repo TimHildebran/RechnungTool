@@ -44,9 +44,12 @@ elif payment_method == "Chrono24":
         payment_details = f"ist die Bezahlung erfolgt, die passende Checkoutnummer ist: {checkout_number}"
 
 # 2. Rechnung erstellen
+# Setze den relativen Pfad des Zielordners
+INVOICE_DIRECTORY = "invoices"  # Relatives Verzeichnis für Rechnungen
+
 if st.button("Rechnung erstellen"):
     try:
-        # Verzeichnis prüfen
+        # Verzeichnis prüfen und erstellen
         if not os.path.exists(INVOICE_DIRECTORY):
             os.makedirs(INVOICE_DIRECTORY)
 
@@ -71,16 +74,15 @@ if st.button("Rechnung erstellen"):
 
         Andreas Hildebrand bestätigt hiermit uneingeschränkt die Originalität der hier verkauften {watch_model}.
 
-        {name} bezahlt für die Uhr den Preis von {price} Euro {shipping_text}. Per {payment_method}
-        {payment_details}.
-        
+        {name} bezahlt für die Uhr den Preis von {price} Euro {shipping_text} {payment_method}.
+        {payment_details}
+
         Die Uhr wird nach § 25 Umsatzsteuergesetz (Differenzbesteuerung Sonderregelung) verkauft.
         Die Mwst kann nicht ausgewiesen werden.
 
         Vielen Dank für Ihr Vertrauen.
         München, {current_date}
         Andreas Hildebrand
-
 
         P.S. Sind Sie mit meinem Service zufrieden? Bitte bewerten Sie mich auf Google+ oder auf Facebook.
         """
